@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TestElement</string>
+    <string name="hello">Hello</string>
+    <string-array name="students">
+        <item>Phuong</item>
+        <item>An</item>
+    </string-array>
+</resources>

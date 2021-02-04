@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+<!--    <ProgressBar-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/progressbar"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:visibility="visible"-->
+<!--        style="@style/Widget.AppCompat.ProgressBar.Horizontal"-->
+<!--        android:max="100"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:layout_marginRight="20dp" />-->
+    <include
+        layout="@layout/trademark"
+        android:layout_width="100dp"
+
+        android:layout_height="50dp"
+        android:layout_toRightOf="@+id/hello" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:id="@+id/studentsSpinner"
+        android:entries="@array/students"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/studentsSpinner"
+        android:layout_marginTop="5dp"
+        android:id="@+id/hello"
+        android:text="@string/hello" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/citiesList"
+        android:layout_below="@+id/studentsSpinner"
+        />
+</RelativeLayout>
