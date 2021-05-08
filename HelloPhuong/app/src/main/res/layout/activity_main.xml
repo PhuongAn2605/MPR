@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/colorBackground">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_background"
+        android:padding="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtHello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:text="Hello"
+            android:textColor="@color/colorWhite"
+            android:textSize="25sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/txtHello"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="15dp"
+            android:text="Phuong"
+            android:textColor="@color/colorWhite"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@id/txtHello"
+            android:textStyle="bold"
+
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_baseline_menu_24"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/colorWhite"></ImageView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/white_rectangle_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtHello"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            >
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:height="40dp"
+                android:background="@null"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp"
+                android:layout_weight="9.5"></EditText>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/search_icon_background"
+                android:padding="6dp"
+                android:src="@drawable/ic_baseline_search_24"
+                app:tint="@color/colorPrimary"
+                android:layout_weight="0.5"></ImageView>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/body"
+        app:layout_constraintTop_toBottomOf="@id/layoutHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/layoutGrid"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
+                    <androidx.cardview.widget.CardView
+                        style="@style/cardView"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_row="0"
+                        android:layout_column="0">
+                        <LinearLayout
+                            style="@style/linearLayout">
+                            <ImageView
+                                style="@style/imageView"
+                                android:src="@drawable/goals"></ImageView>
+                            <TextView
+                                style="@style/textView"
+                                android:text="Goals"
+                                ></TextView>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        style="@style/cardView"
+                        android:layout_marginBottom="20dp"
+                        android:layout_row="0"
+                        android:layout_column="1">
+                        <LinearLayout
+                            style="@style/linearLayout"
+                            >
+                            <ImageView
+                                style="@style/imageView"
+                                android:src="@drawable/finance"></ImageView>
+                            <TextView
+                                style="@style/textView"
+                                android:text="Finance"
+                                ></TextView>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        style="@style/cardView"
+                        android:layout_marginRight="30dp"
+                        android:layout_row="1"
+                        android:layout_column="0">
+                        <LinearLayout
+                            style="@style/linearLayout"
+                            >
+                            <ImageView
+                                style="@style/imageView"
+                                android:src="@drawable/health"></ImageView>
+                            <TextView
+                                style="@style/textView"
+                                android:text="Finance"
+                                ></TextView>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView><androidx.cardview.widget.CardView
+                    style="@style/cardView"
+                    android:layout_row="1"
+                    android:layout_column="1">
+                    <LinearLayout
+                        style="@style/linearLayout"
+                        >
+                        <ImageView
+                            style="@style/imageView"
+                            android:src="@drawable/comfort"></ImageView>
+                        <TextView
+                            style="@style/textView"
+                            android:text="Finance"
+                            ></TextView>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                </GridLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/trending_background"
+                app:layout_constraintTop_toBottomOf="@id/body"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="20dp"
+                android:padding="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@drawable/white_rectangle_background"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16dp"
+                    android:gravity="center"
+                    android:text="TRENDING"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imgFavorite"
+                    android:src="@drawable/ic_baseline_favorite_border_24"
+                    android:maxWidth="30dp"
+                    android:maxHeight="30dp"
+                    app:tint="@color/colorWhite"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></ImageView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    app:layout_constraintTop_toBottomOf="@id/imgFavorite"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tristique nulla quis iaculis tristique. Nam ac ligula in purus suscipit ornare. Cras vel congue lacus. Donec vel velit consequat, iaculis diam vel, ornare libero. Proin sodales, elit blandit fermentum lacinia, tellus turpis sagittis velit, ut consectetur mauris arcu id diam"
+                    ></TextView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

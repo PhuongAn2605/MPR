@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="price_linearlayout">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+    <style name="tvUnit">
+        <item name="android:textStyle">bold</item>
+        <item name="android:text">@string/tvUnit</item>
+        <item name="android:layout_marginRight">1dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+    <style name="tvPrice">
+        <item name="android:textStyle">bold</item>
+        <item name="android:text">150000</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+
+    </style>
+</resources>

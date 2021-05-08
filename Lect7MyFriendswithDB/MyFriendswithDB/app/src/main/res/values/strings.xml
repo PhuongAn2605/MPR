@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">My Friends with DB</string>
+    <string name="guide">Click item for actions, (+) for adding another friend.</string>
+</resources>

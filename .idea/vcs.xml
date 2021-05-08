@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MprTut5" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MyNote" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MyYouTube" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Sample Native App/AdMob-Native-Ad-Gradle-19.7.0" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/googleAds/googleads-mobile-android-examples" vcs="Git" />
+  </component>
+</project>

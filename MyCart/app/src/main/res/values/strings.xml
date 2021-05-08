@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Cart</string>
+    <string name="tvMyCart">My Cart</string>
+    <string name="tvQuantity">Quantity</string>
+    <string name="tvSumPrice">Sum Price</string>
+    <string name="tvUnit">đ</string>
+</resources>
