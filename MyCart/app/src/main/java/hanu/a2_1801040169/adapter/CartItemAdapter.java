@@ -15,27 +15,50 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 
+import hanu.a2_1801040169.CartActivity;
 import hanu.a2_1801040169.R;
-import hanu.a2_1801040169.db.CartItemManager;
-import hanu.a2_1801040169.models.CartItem;
+import hanu.a2_1801040169.db.ProductManager;
+import hanu.a2_1801040169.models.Product;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartItemHolder> {
 
-    private List<CartItem> cartItems;
+    public List<Product> cartItems;
     private Context context;
+    private double totalPrice;
+    private CartActivity cartActivity;
 
-    public CartItemAdapter(List<CartItem> cartItems) {
+    private IClickChangeTotalPriceListener iClickChangeTotalPriceListener;
+
+    public interface IClickChangeTotalPriceListener {
+        void onCLickChangeTotalPrice(ImageView iv, Product cartItem);
+    }
+
+    //
+    public CartItemAdapter(List<Product> cartItems, double totalPrice, Context context, CartActivity cartActivity) {
         this.cartItems = cartItems;
         this.context = context;
+        this.totalPrice = totalPrice;
+        this.cartActivity = cartActivity;
+    }
+
+    public CartItemAdapter(List<Product> cartItems, IClickChangeTotalPriceListener listener) {
+        this.iClickChangeTotalPriceListener = listener;
+        this.cartItems = cartItems;
+        notifyDataSetChanged();
+//        this.context = context;
+//        this.totalPrice = totalPrice;
     }
 
     @NonNull
@@ -52,29 +75,32 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
 
     @Override
     public void onBindViewHolder(@NonNull CartItemAdapter.CartItemHolder holder, int position) {
-        CartItem cartItem = cartItems.get(position);
+        Product cartItem = cartItems.get(position);
 
         holder.bind(cartItem, position);
 
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return cartItems.size();
     }
 
     public class CartItemHolder extends RecyclerView.ViewHolder {
-        ImageView ivItem, ivIncrease, ivDecrease;
-        TextView tvName, tvPrice, tvCount, tvSumPrice;
+        public ImageView ivItem, ivIncrease, ivDecrease;
+        private TextView tvName, tvPrice, tvCount, tvSumPrice;
+        private CardView cvItem;
         private long count;
         private double sumPrice;
         private Context context;
-        private CartItemManager cartItemManager;
-        private CartItem item;
+        private ProductManager productManager;
+        private Product item;
+        String short_name;
+
         public CartItemHolder(@NonNull View itemView, Context context) {
             super(itemView);
             this.context = context;
-            cartItemManager = CartItemManager.getInstance(context);
+            productManager = productManager.getInstance(context);
 
             ivItem = itemView.findViewById(R.id.ivItem);
             ivIncrease = itemView.findViewById(R.id.ivIncrease);
@@ -84,53 +110,92 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvCount = itemView.findViewById(R.id.tvCount);
             tvSumPrice = itemView.findViewById(R.id.tvSumPrice);
+
+            cvItem = itemView.findViewById(R.id.cvItem);
+//            tvTotalPriceAdapter = cartActivity.findViewById(R.id.tvTotalPrice);
         }
 
 
-        public void bind(CartItem cartItem, int position) {
+        public void bind(Product cartItem, int position) {
 
 //            ivItem.setImageResource(R.drawable.watch_sport_s03);
             ivIncrease.setImageResource(R.drawable.ic_baseline_arrow_drop_up_24);
             ivDecrease.setImageResource(R.drawable.ic_baseline_arrow_drop_down_24);
 
-            tvName.setText(cartItem.getName());
-            tvPrice.setText(Double.toString(cartItem.getPrice()));
+            short_name = cartItem.getName().split(",")[0];
+
+            tvName.setText(short_name);
+            tvPrice.setText(cartItem.formatPrice(cartItem.getPrice()));
             tvCount.setText(Long.toString(cartItem.getCount()));
-            tvSumPrice.setText(Double.toString(cartItem.getSumPrice()));
+            tvSumPrice.setText(cartItem.formatPrice(cartItem.getSumPrice()));
 
             String url = cartItem.getThumbnail();
             ImageLoader imageLoader = new ImageLoader();
             imageLoader.execute(url);
 //            String short_name;
 
+            cvItem.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Log.d("LONG CLICK", "clicked");
+                    deleteProduct(short_name, cartItem, position);
+                    return true;
+
+                }
+            });
+
+
             ivIncrease.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-//                        count = cartItem.getCount() + 1;
-                        cartItem.setCount(cartItem.getCount() + 1);
-//                        sumPrice = cartItem.getSumPrice() + cartItem.getPrice();
-                        cartItem.setSumPrice(cartItem.getSumPrice() + cartItem.getPrice());
-                        cartItemManager.update(cartItem);
+//                        count = Product.getCount() + 1;
+                    iClickChangeTotalPriceListener.onCLickChangeTotalPrice(ivIncrease, cartItem);
+                    cartItem.setCount(cartItem.getCount() + 1);
+//                        sumPrice = Product.getSumPrice() + Product.getPrice();
+//                        cartItem.setSumPrice(cartItem.getSumPrice() + cartItem.getPrice());
+                    productManager.update(cartItem);
+                    totalPrice = cartItem.getSumPrice();
+//                    Log.d("TOTAL", totalPrice + "");
+//                    tvTotalPriceAdapter.setText(cartItem.formatPrice(totalPrice));
                     notifyItemChanged(position);
+
+//                    cartItems.set(position, cartItem);
+//                    Log.d("CART", cartItems.toString());
+//                    CartActivity cartActivity = new CartActivity();
+//                    Log.d("CART BEFORE", cartActivity.getTotalPrice() + "");
+
+//                    cartActivity.setTotalPrice(totalPrice);
+//                    notifyDataSetChanged();
+//                    Log.d("CART", cartActivity.getTotalPrice() + "");
+
+//                    cartActivity.tvTotalPrice.setText(cartItem.formatPrice(totalPrice));
+//                    notifyItemChanged(position);
+
+//                    notifyDataSetChanged();
+
+
                 }
             });
 
-            ivDecrease.setOnClickListener(new View.OnClickListener(){
-                String short_name = cartItem.getName().split(",")[0];
-
+            ivDecrease.setOnClickListener(new View.OnClickListener() {
+                //                String short_name = product.getName().split(",")[0];
                 @Override
                 public void onClick(View v) {
-                    if(cartItem.getCount() > 1){
-                        cartItem.setCount(cartItem.getCount() - 1);
-//                        sumPrice = cartItem.getSumPrice() + cartItem.getPrice();
-                        cartItem.setSumPrice(cartItem.getSumPrice() - cartItem.getPrice());
-                        cartItemManager.update(cartItem);
-                        notifyItemChanged(position);
+                    if (cartItem.getCount() > 1) {
+                        iClickChangeTotalPriceListener.onCLickChangeTotalPrice(ivDecrease, cartItem);
 
-                    }else{
-                        deleteCartItem(short_name, cartItem, position);
-//                        cartItemManager.delete(cartItem.getId());
+                        cartItem.setCount(cartItem.getCount() - 1);
+//                        sumPrice = Product.getSumPrice() + Product.getPrice();
+//                        cartItem.setSumPrice(cartItem.getSumPrice() - cartItem.getPrice());
+                        productManager.update(cartItem);
+                        notifyItemChanged(position);
+//                        notifyDataSetChanged();
+
+
+                    } else {
+                        deleteProduct(short_name, cartItem, position);
+//                        CartItemManager.delete(Product.getId());
 //                        notifyItemRemoved(position);
 //                        Toast.makeText(context, "Deleted " + short_name, Toast.LENGTH_SHORT).show();
                     }
@@ -138,16 +203,19 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
             });
         }
 
-        public void deleteCartItem(String short_name, CartItem cartItem, int position){
+        public void deleteProduct(String short_name, Product cartItem, int position) {
             new AlertDialog.Builder(context)
                     .setTitle("Delete")
                     .setMessage("Are you sure to delete " + short_name)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            cartItemManager.delete(cartItem.getId());
+                            iClickChangeTotalPriceListener.onCLickChangeTotalPrice(ivDecrease, cartItem);
+                            productManager.delete(cartItem.getId());
                             cartItems.remove(cartItem);
                             notifyItemRemoved(position);
+//                            notifyDataSetChanged();
+
                             Toast.makeText(context, "Deleted " + short_name, Toast.LENGTH_SHORT).show();
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -157,6 +225,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                 }
             }).show();
         }
+
 
         public class ImageLoader extends AsyncTask<String, Void, Bitmap> {
 

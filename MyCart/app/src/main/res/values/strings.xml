@@ -4,4 +4,9 @@
     <string name="tvQuantity">Quantity</string>
     <string name="tvSumPrice">Sum Price</string>
     <string name="tvUnit">đ</string>
+    <string name="searchHint">Search...</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="totalPrice">Total Price</string>
+    <string name="checkout">Checkout</string>
 </resources>

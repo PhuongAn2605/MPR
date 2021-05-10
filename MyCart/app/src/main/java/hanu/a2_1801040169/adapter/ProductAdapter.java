@@ -29,25 +29,24 @@ import java.util.List;
 import java.util.Scanner;
 
 import hanu.a2_1801040169.R;
-import hanu.a2_1801040169.db.CartItemManager;
-import hanu.a2_1801040169.models.CartItem;
+import hanu.a2_1801040169.db.ProductManager;
 import hanu.a2_1801040169.models.Product;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductHolder> {
-    
+
     List<Product> products;
     private Context context;
-    private Activity activity;
-    
-    
+//    private Activity activity;
+
+
     public ProductAdapter(List<Product> products){
         this.products = products;
     }
 
-    public ProductAdapter(List<Product> products, Context context, Activity activity) {
+    public ProductAdapter(List<Product> products, Context context) {
         this.products = products;
         this.context = context;
-        this.activity = activity;
+//        this.activity = activity;
     }
 
     @NonNull
@@ -56,7 +55,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View itemView = inflater.inflate(R.layout.item_product, parent, false);
-        
+
         return new ProductHolder(itemView, context);
     }
 
@@ -75,11 +74,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         private ImageView imgProduct, imgCart;
         private TextView productPrice, productDesc;
         Context context;
-        private CartItem cartItem;
+//        private Product cartItem;
         private long count;
         private double sumPrice;
-        private CartItemManager cartItemManager;
-        private CartItem existingItem;
+        private ProductManager productManager;
+//        private Product existingItem;
 
 
         public ProductHolder(@NonNull View itemView, Context context) {
@@ -97,7 +96,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
 //            imgProduct.setImageResource(R.drawable.watch_sport_s03);
             imgCart.setImageResource(R.drawable.ic_baseline_shopping_cart_24);
             productDesc.setText(product.getName());
-            productPrice.setText(Double.toString(product.getUnitPrice()));
+            productPrice.setText(product.formatPrice(product.getPrice()));
 
             String url = product.getThumbnail();
             ImageLoader restLoader = new ImageLoader();
@@ -109,35 +108,35 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
                     String short_name = product.getName().split(",")[0];
                     Toast.makeText(context, short_name + " is added to your cart", Toast.LENGTH_SHORT).show();
 
-                    cartItemManager = CartItemManager.getInstance(context);
-                    existingItem = cartItemManager.findByProductId(product.getId());
+                    productManager = ProductManager.getInstance(context);
+                    Product existingItem = productManager.findById(product.getId());
 //                    Log.d("EXIST", "" + existingItem.toString());
                     if(existingItem != null){
                         count = existingItem.getCount() + 1;
-                        Log.d("EXIST", "" + count);
+//                        Log.d("EXIST", "" + count);
                         existingItem.setCount(count);
 
-                        sumPrice = product.getUnitPrice() * count;
-                        Log.d("EXIST", "" + sumPrice);
-                        existingItem.setSumPrice(sumPrice);
+//                        sumPrice = product.getPrice() * count;
+//                        Log.d("EXIST", "" + sumPrice);
+//                        existingItem.setSumPrice(sumPrice);
 
-//                        Log.d("EXIST", "" + existingItem.toString());
+                        Log.d("EXIST", "" + existingItem.toString());
 //                        Log.d("PRODUCT", product.getId() + "");
 
 //                        cartItem = new CartItem(product.getId(), product.getThumbnail(), product.getName(), product.getUnitPrice(), count, sumPrice, product.getId());
 //                        Log.d("EXIST", "" + cartItem.toString());
 
-                        cartItemManager.update(existingItem);
+                        productManager.update(existingItem);
                         notifyItemChanged(position);
 
                     }else if(existingItem == null){
                         count = 1;
-                        sumPrice = product.getUnitPrice();
+                        sumPrice = product.getPrice();
                         Log.d("PRODUCT", product.getId() + "");
-                        cartItem = new CartItem(product.getId(), product.getThumbnail(), product.getName(), product.getUnitPrice(), count, sumPrice, product.getId());
+                        Product cartItem = new Product(product.getId(), product.getThumbnail(), product.getName(), product.getCategory(), product.getPrice(), count);
                         Log.d("EXIST", "" + cartItem.toString());
 
-                        cartItemManager.add(cartItem);
+                        productManager.add(cartItem);
                         notifyDataSetChanged();
                     }
 
@@ -147,9 +146,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
                 }
             });
         }
-
-
-
 
         public class ImageLoader extends AsyncTask<String, Void, Bitmap> {
 

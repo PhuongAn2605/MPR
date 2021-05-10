@@ -3,6 +3,9 @@ package hanu.a2_1801040169;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,21 +40,21 @@ import hanu.a2_1801040169.models.Product;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView rvProducts;
-    private List<Product> products;
-    private ProductAdapter productAdapter;
-
-    private static final int VIEW_CART = 1;
-    private static String JSON_URL = "https://mpr-cart-api.herokuapp.com/products";
+//    private RecyclerView rvProducts;
+//    private List<Product> products;
+//    private ProductAdapter productAdapter;
+//
+//    private static final int VIEW_CART = 1;
+//    private static String JSON_URL = "https://mpr-cart-api.herokuapp.com/products";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rvProducts = findViewById(R.id.rvProducts);
-
-        products = new ArrayList<>();
+//        rvProducts = findViewById(R.id.rvProducts);
+//
+//        products = new ArrayList<>();
 //        products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
 //        products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
 //        products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
@@ -59,14 +62,20 @@ public class MainActivity extends AppCompatActivity {
 //        products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
 
 //        String url = "https://mpr-cart-api.herokuapp.com/products";
-        RestLoader restLoader = new RestLoader();
-        restLoader.execute();
+//        RestLoader restLoader = new RestLoader();
+//        restLoader.execute();
 
 //        productAdapter = new ProductAdapter(products);
 //        rvProducts.setAdapter(productAdapter);
 //
 //        rvProducts.setLayoutManager(new GridLayoutManager(this, 2));
 
+        FragmentManager manager = getSupportFragmentManager();
+        Fragment fragment = new ProductFragment();
+
+        manager.beginTransaction()
+                .replace(R.id.fragmentContainer, fragment)
+                .commit();
 
     }
 
@@ -86,86 +95,86 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class RestLoader extends AsyncTask<String, Void, String> {
-        private ArrayList<String> list = new ArrayList<>();
-
-        @Override
-        protected String doInBackground(String... strings) {
-            URL url;
-            HttpURLConnection urlConnection;
-//            String current = "";
-//            for (int i = 0; i < list.size(); i++) {
-            try {
-                url = new URL(JSON_URL);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.connect();
-                InputStream is = urlConnection.getInputStream();
-                Scanner sc = new Scanner(is);
-                StringBuilder result = new StringBuilder();
-                String line;
-                while (sc.hasNextLine()) {
-                    line = sc.nextLine();
-                    result.append(line);
-                }
-
-                return result.toString();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-//            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (result == null) {
-                return;
-            }
-            try {
-                JSONArray jsonArray = new JSONArray(result);
-//                Log.d("JSONArr", result + "");
-
-//                Long id = obj.getLong("id");
-                for(int i=0; i<jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                    Log.d("JSONObj", jsonObject + "");
-
-                    Product product = new Product();
-                    product.setId(jsonObject.getLong("id"));
-//                                        Log.d("JSONObj", jsonObject.getLong("id") + "");
-
-//                    product.setThumbnail(jsonObject.getString("thumbnail"));
-//                    product.setName(jsonObject.getString("name"));
-//                    product.setCategory(jsonObject.getString("category"));
-//                    product.setUnitPrice(jsonObject.getDouble("unitPrice"));
+//    public class RestLoader extends AsyncTask<String, Void, String> {
+//        private ArrayList<String> list = new ArrayList<>();
 //
-//                    products.add(product);
-                    long id = jsonObject.getLong("id");
-                    String name = jsonObject.getString("name");
-                    String category = jsonObject.getString("category");
-                    double unitPrice = jsonObject.getDouble("unitPrice");
-
-                    String thumbnail = jsonObject.getString("thumbnail");
-//                            products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
-//                    products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
-//                    products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
-//                    products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
-                    products.add(new Product(id, thumbnail, name, category, unitPrice));
-                }
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            productAdapter = new ProductAdapter(products);
-            rvProducts.setAdapter(productAdapter);
-
-            rvProducts.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-        }
-
-}
+//        @Override
+//        protected String doInBackground(String... strings) {
+//            URL url;
+//            HttpURLConnection urlConnection;
+////            String current = "";
+////            for (int i = 0; i < list.size(); i++) {
+//            try {
+//                url = new URL(JSON_URL);
+//                urlConnection = (HttpURLConnection) url.openConnection();
+//                urlConnection.connect();
+//                InputStream is = urlConnection.getInputStream();
+//                Scanner sc = new Scanner(is);
+//                StringBuilder result = new StringBuilder();
+//                String line;
+//                while (sc.hasNextLine()) {
+//                    line = sc.nextLine();
+//                    result.append(line);
+//                }
+//
+//                return result.toString();
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+////            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//            if (result == null) {
+//                return;
+//            }
+//            try {
+//                JSONArray jsonArray = new JSONArray(result);
+////                Log.d("JSONArr", result + "");
+//
+////                Long id = obj.getLong("id");
+//                for(int i=0; i<jsonArray.length(); i++) {
+//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+////                    Log.d("JSONObj", jsonObject + "");
+//
+//                    Product product = new Product();
+//                    product.setId(jsonObject.getLong("id"));
+////                                        Log.d("JSONObj", jsonObject.getLong("id") + "");
+//
+////                    product.setThumbnail(jsonObject.getString("thumbnail"));
+////                    product.setName(jsonObject.getString("name"));
+////                    product.setCategory(jsonObject.getString("category"));
+////                    product.setUnitPrice(jsonObject.getDouble("unitPrice"));
+////
+////                    products.add(product);
+//                    long id = jsonObject.getLong("id");
+//                    String name = jsonObject.getString("name");
+//                    String category = jsonObject.getString("category");
+//                    double unitPrice = jsonObject.getDouble("unitPrice");
+//
+//                    String thumbnail = jsonObject.getString("thumbnail");
+////                            products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
+////                    products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
+////                    products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
+////                    products.add(new Product(1, "Đồng hồ điện tử nam nữ Sports S03 thể thao, mẫu mới tuyệt đẹp, full chức năng, chống nước tốt", "watches", 23000));
+//                    products.add(new Product(id, thumbnail, name, category, unitPrice));
+//                }
+//
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            productAdapter = new ProductAdapter(products, MainActivity.this);
+//            rvProducts.setAdapter(productAdapter);
+//
+//            rvProducts.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+//        }
+//
+//}
 
 //public class ImageLoader extends AsyncTask<String, Void, Bitmap> {
 //

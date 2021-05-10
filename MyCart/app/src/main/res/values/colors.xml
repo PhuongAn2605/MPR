@@ -13,12 +13,16 @@
     <color name="colorAccent">#333333</color>
     <color name="colorPrimaryLight">#F4EBEB</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorBackground">#EBEBEB</color>
+    <color name="colorBackground">#F3F4FA</color>
     <color name="colorTrendingStart">#00B09B</color>
     <color name="colorTrendingEnd">#96C93D</color>
     <color name="colorDivider">#EBF1F6</color>
     <color name="colorSearch">#DA4136</color>
     <color name="colorCart">#09AFC5</color>
+    <color name="colorTotal">#EFE2E2</color>
+    <color name="colorItemCartBackground">#EFF2F4</color>
+
+
 
 
 </resources>
